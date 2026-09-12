@@ -1,0 +1,1049 @@
+Build an Android Real-Time Two-Way Voice Translator
+
+1. Project Goal
+
+Create a professional Android application that works as a real-time two-way voice translator.
+
+The user selects two languages:
+
+- Language 1
+- Language 2
+
+Example:
+
+Arabic ⇄ Turkish
+
+The application continuously listens to spoken conversation in either language, detects which selected language is being spoken, converts speech to text, translates it into the other selected language, and reads the translation aloud.
+
+The primary use case is a conversation between two people who speak different languages.
+
+Example:
+
+Person A speaks Arabic:
+
+«"السلام عليكم، أين أقرب محطة مترو؟"»
+
+The application immediately displays:
+
+Arabic: السلام عليكم، أين أقرب محطة مترو؟
+
+Turkish: Merhaba, en yakın metro istasyonu nerede?
+
+Then the Turkish translation is spoken using Text-to-Speech.
+
+If Person B replies in Turkish:
+
+«"En yakın metro istasyonu şu tarafta."»
+
+The application should automatically recognize that Turkish is being spoken and translate it into Arabic:
+
+Turkish: En yakın metro istasyonu şu tarafta.
+
+Arabic: أقرب محطة مترو في هذا الاتجاه.
+
+---
+
+2. Target Platform
+
+Build for:
+
+- Android phones
+- Android 10+
+- Portrait and landscape support
+- Modern Android UI
+- Material 3 design
+- Responsive UI for different screen sizes
+
+Preferred technology:
+
+Flutter + Dart
+
+Use the latest stable Flutter version available in the development environment.
+
+Architecture should be clean, modular and production-ready.
+
+---
+
+3. Supported Languages
+
+Initially support at least:
+
+1. Arabic
+2. English
+3. Turkish
+4. French
+5. Spanish
+6. German
+7. Italian
+8. Portuguese
+9. Russian
+10. Chinese
+11. Japanese
+12. Korean
+
+Design the language system so additional languages can easily be added later.
+
+Each language must have:
+
+- Language name
+- ISO language code
+- Speech recognition locale
+- Translation locale
+- Text-to-Speech locale
+- Voice availability status
+
+Arabic must support:
+
+"ar"
+
+English:
+
+"en"
+
+Turkish:
+
+"tr"
+
+French:
+
+"fr"
+
+etc.
+
+---
+
+4. Main User Experience
+
+The main screen should be extremely simple.
+
+Top Section
+
+Two language selectors:
+
+[ 🇹🇳 العربية ▼ ]   ⇄   [ 🇹🇷 Türkçe ▼ ]
+
+The center button swaps the languages.
+
+Example:
+
+Arabic ⇄ Turkish
+
+After pressing swap:
+
+Turkish ⇄ Arabic
+
+---
+
+5. Conversation Mode
+
+The main screen contains a large microphone button:
+
+🎤
+
+Button states:
+
+Idle
+
+"Tap to Start"
+
+Listening
+
+"Listening..."
+
+Processing
+
+"Translating..."
+
+Speaking
+
+"Speaking..."
+
+The microphone should visually indicate the current state.
+
+Use animations but keep them lightweight.
+
+---
+
+6. Automatic Two-Way Detection
+
+This is one of the most important features.
+
+The application should listen continuously during Conversation Mode.
+
+It should determine whether the user is speaking:
+
+- Language 1
+- Language 2
+
+Example:
+
+Selected:
+
+Arabic ⇄ Turkish
+
+User speaks Arabic.
+
+The application should:
+
+1. Detect speech
+2. Detect/identify Arabic
+3. Convert Arabic speech to text
+4. Translate Arabic → Turkish
+5. Display both texts
+6. Speak Turkish translation
+
+Then the second person speaks Turkish.
+
+The application should:
+
+1. Detect speech
+2. Detect/identify Turkish
+3. Convert Turkish speech to text
+4. Translate Turkish → Arabic
+5. Display both texts
+6. Speak Arabic translation
+
+Avoid requiring the user to manually select the direction after every sentence.
+
+---
+
+7. Speech Recognition
+
+Implement speech recognition using a reliable Android-compatible solution.
+
+Preferred approach:
+
+- Android SpeechRecognizer where appropriate
+- Flutter plugin abstraction
+- Streaming/partial recognition if supported
+
+The architecture must allow replacing the speech recognition provider later.
+
+Create an abstraction:
+
+abstract class SpeechRecognitionService {
+  Future<void> initialize();
+  Stream<SpeechRecognitionResult> listen(String locale);
+  Future<void> stop();
+  Future<void> cancel();
+}
+
+Support:
+
+- Partial results
+- Final results
+- Error handling
+- Microphone permissions
+- Recognition timeout
+- Network errors
+- No speech detected
+- Unsupported language
+
+Do not crash when speech recognition fails.
+
+---
+
+8. Translation Engine
+
+Create a translation service abstraction.
+
+abstract class TranslationService {
+  Future<String> translate({
+    required String text,
+    required String sourceLanguage,
+    required String targetLanguage,
+  });
+}
+
+The first implementation should use a configurable translation API.
+
+Do NOT hard-code API keys.
+
+Use secure configuration.
+
+Example:
+
+TRANSLATION_API_URL
+TRANSLATION_API_KEY
+
+Keep the translation provider modular so the application can later support:
+
+- Google Cloud Translation
+- Microsoft Translator
+- DeepL
+- LibreTranslate
+- AI/LLM translation
+- Local/offline translation models
+
+The UI must not depend directly on a specific provider.
+
+---
+
+9. Text-to-Speech
+
+Implement Text-to-Speech.
+
+Create:
+
+abstract class TextToSpeechService {
+  Future<void> initialize();
+  Future<void> speak(
+    String text,
+    String languageCode,
+  );
+  Future<void> stop();
+}
+
+The application should select an appropriate voice based on the target language.
+
+Example:
+
+Arabic translation → Arabic TTS
+
+Turkish translation → Turkish TTS
+
+English translation → English TTS
+
+Allow the user to control:
+
+- Speech speed
+- Voice where supported
+- Volume
+
+---
+
+10. Conversation History
+
+Every translated sentence should appear in a conversation-style interface.
+
+Example:
+
+┌─────────────────────────────┐
+│ 👤 Arabic                   │
+│ أين أقرب محطة مترو؟         │
+│                             │
+│ 🇹🇷 Turkish                 │
+│ En yakın metro istasyonu    │
+│ nerede?                     │
+│                             │
+│ 🔊                          │
+└─────────────────────────────┘
+
+Then:
+
+┌─────────────────────────────┐
+│ 👤 Turkish                  │
+│ Metro istasyonu şu tarafta. │
+│                             │
+│ 🇸🇦 Arabic                  │
+│ محطة المترو في هذا الاتجاه. │
+│                             │
+│ 🔊                          │
+└─────────────────────────────┘
+
+Each conversation item should contain:
+
+- Source language
+- Source text
+- Target language
+- Translated text
+- Timestamp
+- Play button
+- Copy button
+
+---
+
+11. Conversation Controls
+
+Add:
+
+Start / Stop
+
+Start or stop real-time translation.
+
+Pause
+
+Temporarily stop listening without clearing the conversation.
+
+Clear
+
+Clear current conversation.
+
+Ask for confirmation before clearing.
+
+Replay
+
+Replay the translated sentence.
+
+Copy
+
+Copy source or translated text.
+
+Share
+
+Share the conversation as text.
+
+---
+
+12. Push-to-Talk Mode
+
+In addition to automatic Conversation Mode, implement a second mode:
+
+Push-to-Talk
+
+User presses and holds the microphone.
+
+The application listens only while the button is pressed.
+
+When released:
+
+Speech → Text → Translation → Voice
+
+This mode is useful in noisy environments.
+
+Allow the user to switch between:
+
+- Automatic Conversation
+- Push-to-Talk
+
+---
+
+13. Manual Direction Mode
+
+Add an optional manual mode.
+
+Example:
+
+[ 🇸🇦 Arabic → 🇹🇷 Turkish ]
+
+Microphone
+
+And:
+
+[ 🇹🇷 Turkish → 🇸🇦 Arabic ]
+
+This is useful when automatic language detection is unreliable.
+
+---
+
+14. Automatic Language Detection
+
+Implement automatic language detection where technically possible.
+
+The detection algorithm should only consider the two selected languages.
+
+For example:
+
+Selected:
+
+Arabic + Turkish
+
+The detector only needs to decide:
+
+Arabic OR Turkish
+
+Do not attempt to detect all supported languages simultaneously.
+
+This improves speed and reliability.
+
+If confidence is low:
+
+- Do not immediately translate
+- Continue listening briefly
+- Use contextual information
+- Prefer the previous speaker/language when appropriate
+
+Expose a configurable confidence threshold.
+
+---
+
+15. Low Latency
+
+Latency is extremely important.
+
+Target:
+
+Speech stops
+↓
+Final transcript
+↓
+Translation
+↓
+TTS
+
+Target total latency:
+
+Preferably under 2–3 seconds
+
+Use:
+
+- Streaming speech recognition when available
+- Async processing
+- Efficient HTTP requests
+- Request cancellation
+- Debouncing
+- Partial transcript handling
+- Caching where useful
+
+Do not translate every partial word.
+
+Translate only when a sentence/utterance is sufficiently complete.
+
+---
+
+16. Noise Handling
+
+Implement basic conversation-friendly noise handling.
+
+Support:
+
+- Voice activity detection where available
+- Silence detection
+- Automatic end-of-sentence detection
+- Ignore very short sounds
+- Ignore empty transcripts
+- Prevent translation loops
+
+Avoid repeatedly translating the application's own TTS output.
+
+The microphone/listening pipeline should pause or reduce recognition while TTS is speaking.
+
+---
+
+17. Prevent Translation Feedback Loop
+
+This is critical.
+
+When the application speaks the translated sentence:
+
+The microphone may hear the application speaker.
+
+The app must NOT translate its own voice back.
+
+Implement:
+
+1. Pause recognition during TTS
+2. Resume recognition after TTS
+3. Optional short delay after TTS
+4. Audio focus management
+
+---
+
+18. Offline Support
+
+The architecture must support offline operation in the future.
+
+At minimum:
+
+- Store language configuration locally
+- Store conversation history locally
+- Cache frequently used translations
+- Detect internet availability
+- Show clear offline status
+
+If offline speech recognition / translation models are available on the device, allow them to be integrated through interfaces.
+
+Do not falsely claim that translation works offline if the current provider requires internet.
+
+---
+
+19. Settings Screen
+
+Create a professional Settings screen.
+
+Options:
+
+Translation
+
+- Translation provider
+- API configuration
+- Translation quality
+- Formal / Natural translation mode
+
+Speech
+
+- Speech speed
+- Voice
+- Auto-play translation
+- Pause listening while speaking
+
+Conversation
+
+- Automatic language detection
+- Push-to-talk
+- Silence timeout
+- Confidence threshold
+
+Appearance
+
+- Light mode
+- Dark mode
+- System default
+
+History
+
+- Save conversation history
+- Clear all history
+
+---
+
+20. Translation Quality
+
+The translator should preserve:
+
+- Meaning
+- Context
+- Names
+- Numbers
+- Dates
+- Locations
+- Technical terminology
+
+Do not perform literal word-by-word translation when it produces unnatural language.
+
+Prefer natural conversational translation.
+
+For Arabic:
+
+Support Modern Standard Arabic properly.
+
+For Turkish:
+
+Use natural Turkish grammar and sentence structure.
+
+---
+
+21. Architecture
+
+Use clean architecture.
+
+Recommended structure:
+
+lib/
+├── core/
+│   ├── constants/
+│   ├── errors/
+│   ├── network/
+│   ├── permissions/
+│   └── utils/
+│
+├── data/
+│   ├── models/
+│   ├── datasources/
+│   └── repositories/
+│
+├── domain/
+│   ├── entities/
+│   ├── repositories/
+│   └── usecases/
+│
+├── services/
+│   ├── speech/
+│   ├── translation/
+│   ├── tts/
+│   ├── language_detection/
+│   └── connectivity/
+│
+├── features/
+│   ├── translator/
+│   ├── conversation/
+│   ├── history/
+│   └── settings/
+│
+└── main.dart
+
+Use dependency injection.
+
+Use interfaces for all external services.
+
+---
+
+22. State Management
+
+Use a modern and maintainable Flutter state-management solution.
+
+Prefer:
+
+Riverpod
+
+The state should explicitly represent:
+
+Idle
+Listening
+Processing
+Translating
+Speaking
+Paused
+Error
+
+Do not create complex state logic directly inside widgets.
+
+---
+
+23. Local Database
+
+Use a local database for conversation history.
+
+Preferred:
+
+SQLite / Drift
+
+Store:
+
+Conversation
+- id
+- createdAt
+- language1
+- language2
+
+TranslationMessage
+- id
+- conversationId
+- sourceLanguage
+- sourceText
+- targetLanguage
+- translatedText
+- timestamp
+
+---
+
+24. UI Design
+
+Create a clean modern Material 3 interface.
+
+Main screen:
+
+┌──────────────────────────────┐
+│      RealTime Translator     │
+│                              │
+│  🇸🇦 Arabic   ⇄   🇹🇷 Turkish │
+│                              │
+│ ──────────────────────────── │
+│                              │
+│  Conversation                │
+│                              │
+│  Arabic                      │
+│  أين محطة المترو؟            │
+│                              │
+│  Turkish                     │
+│  Metro istasyonu nerede?     │
+│                              │
+│             🔊               │
+│                              │
+│                              │
+│            🎤                │
+│       Tap to Speak           │
+│                              │
+│   Conversation   Settings    │
+└──────────────────────────────┘
+
+Make the microphone button large and accessible.
+
+Use subtle animations.
+
+---
+
+25. Permission Handling
+
+Request microphone permission properly.
+
+Explain why the permission is required.
+
+Handle:
+
+- Permission granted
+- Permission denied
+- Permission permanently denied
+
+Provide a button to open Android settings when necessary.
+
+Never request unnecessary permissions.
+
+---
+
+26. Error Handling
+
+The application must gracefully handle:
+
+- No internet
+- API timeout
+- API error
+- Speech recognition unavailable
+- Microphone unavailable
+- TTS unavailable
+- Unsupported language
+- Empty speech
+- Translation failure
+- Rate limits
+
+Show human-readable messages.
+
+Never expose API keys or internal stack traces to the user.
+
+---
+
+27. Security
+
+Never store API keys inside the source code.
+
+Use:
+
+- Environment variables for development
+- Secure configuration
+- HTTPS only
+- No sensitive data in logs
+- No raw audio storage unless explicitly enabled by the user
+
+Do not send audio to third-party services unless required by the selected speech provider.
+
+---
+
+28. Privacy
+
+Add a Privacy section explaining:
+
+- Whether speech is sent to external services
+- Whether translations are stored
+- Whether conversation history is stored locally
+- Whether audio is recorded
+
+Default behavior:
+
+Do not permanently store raw microphone audio.
+
+Only store text conversation history if the user enables history.
+
+---
+
+29. Performance
+
+The app should:
+
+- Minimize battery consumption
+- Avoid unnecessary rebuilds
+- Avoid memory leaks
+- Stop microphone when not needed
+- Stop TTS correctly
+- Cancel pending translation requests when appropriate
+
+Test with long conversations.
+
+The application must remain responsive during continuous translation.
+
+---
+
+30. API Abstraction
+
+Create provider interfaces so the application can later support multiple providers.
+
+Example:
+
+abstract class TranslationProvider {
+  String get name;
+
+  Future<TranslationResult> translate(
+    TranslationRequest request,
+  );
+}
+
+Possible providers:
+
+GoogleTranslatorProvider
+DeepLProvider
+MicrosoftTranslatorProvider
+LibreTranslateProvider
+AITranslatorProvider
+
+For the first version, implement one working provider with configuration.
+
+---
+
+31. Development Requirements
+
+Do not create a fake demo.
+
+Build a fully functional MVP.
+
+The application must:
+
+1. Compile successfully.
+2. Run on a real Android device.
+3. Request microphone permission.
+4. Capture speech.
+5. Convert speech to text.
+6. Translate the text.
+7. Display original + translated text.
+8. Read translation aloud.
+9. Support Arabic ⇄ Turkish.
+10. Support English ⇄ Arabic.
+11. Support English ⇄ Turkish.
+12. Support additional languages through the language configuration system.
+13. Support automatic conversation mode.
+14. Support push-to-talk.
+15. Support manual direction mode.
+16. Save conversation history locally.
+17. Handle network/API errors.
+18. Have a professional Material 3 UI.
+
+---
+
+32. Testing
+
+Create automated tests for:
+
+Unit tests
+
+- Language selection
+- Language swapping
+- Translation service
+- Speech state machine
+- Conversation management
+- Language detection logic
+
+Widget tests
+
+- Main translator screen
+- Language selector
+- Microphone states
+- Conversation bubbles
+- Settings
+
+Integration tests
+
+Test:
+
+Arabic speech
+→ Arabic transcript
+→ Turkish translation
+→ Turkish TTS
+
+and:
+
+Turkish speech
+→ Turkish transcript
+→ Arabic translation
+→ Arabic TTS
+
+---
+
+33. Important Implementation Rule
+
+Do not over-engineer the first version.
+
+First make this pipeline work reliably:
+
+Microphone
+    ↓
+Speech Recognition
+    ↓
+Final Sentence
+    ↓
+Language Detection
+    ↓
+Translation
+    ↓
+Display
+    ↓
+Text-to-Speech
+
+Then add advanced optimization.
+
+---
+
+34. Deliverables
+
+Create:
+
+1. Complete Flutter project
+2. Android configuration
+3. Clean architecture
+4. Working main screen
+5. Working speech recognition
+6. Working translation provider
+7. Working TTS
+8. Conversation history
+9. Settings
+10. Error handling
+11. Tests
+12. README.md
+
+README must explain:
+
+- How to install
+- How to configure API keys
+- How to run
+- How to build APK
+- How to add another translation provider
+- How to add another language
+
+---
+
+35. Final Acceptance Test
+
+Before considering the project complete, perform this real-world test:
+
+Test A
+
+Select:
+
+Arabic ⇄ Turkish
+
+Say in Arabic:
+
+"السلام عليكم، كيف يمكنني الوصول إلى محطة المترو؟"
+
+Expected:
+
+Arabic transcript displayed.
+
+Natural Turkish translation displayed.
+
+Turkish translation spoken aloud.
+
+Test B
+
+Without changing anything, respond in Turkish.
+
+Expected:
+
+Turkish automatically detected.
+
+Turkish transcript displayed.
+
+Natural Arabic translation displayed.
+
+Arabic translation spoken aloud.
+
+Test C
+
+Repeat the conversation for at least 10 exchanges.
+
+The application must remain stable and responsive.
+
+Test D
+
+Disable internet.
+
+The application must clearly report that the current translation provider requires an internet connection instead of pretending that translation succeeded.
+
+---
+
+IMPORTANT
+
+Work iteratively.
+
+First create the project architecture and basic UI.
+
+Then implement:
+
+Speech → Translation → TTS
+
+Then implement automatic two-way conversation.
+
+Then implement history and settings.
+
+After each major step, run tests and fix errors before moving to the next step.
+
+Do not leave TODO placeholders for core functionality.
+
+The final result should feel like a real commercial Android translator application, not a prototype.
