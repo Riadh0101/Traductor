@@ -18,6 +18,10 @@ class TwoWayLanguageDetector {
   static final RegExp _cjkPattern = RegExp(r'[\u4E00-\u9FFF]');
   static final RegExp _japanesePattern = RegExp(r'[\u3040-\u309F\u30A0-\u30FF]');
   static final RegExp _koreanPattern = RegExp(r'[\uAC00-\uD7AF\u1100-\u11FF]');
+  static final RegExp _devanagariPattern = RegExp(r'[\u0900-\u097F]');
+  static final RegExp _bengaliPattern = RegExp(r'[\u0980-\u09FF]');
+  static final RegExp _thaiPattern = RegExp(r'[\u0E00-\u0E7F]');
+  static final RegExp _greekPattern = RegExp(r'[\u0370-\u03FF]');
 
   // Diacritics specific to languages
   static final Map<String, RegExp> _specificCharPatterns = {
@@ -28,6 +32,14 @@ class TwoWayLanguageDetector {
     'pt': RegExp(r'[ãõáéíóúâêôçÃÕÁÉÍÓÚÂÊÔÇ]'),
     'it': RegExp(r'[àèéìíîòóùú]'),
     'ur': RegExp(r'[ٹڈڑںےہپچژگ]'),
+    'fa': RegExp(r'[پچژگی]'),
+    'uk': RegExp(r'[іїєґІЇЄҐ]'),
+    'ru': RegExp(r'[ыэъЫЭЪ]'),
+    'kk': RegExp(r'[әғқңөұүһіӘҒҚҢӨҰҮҺІ]'),
+    'az': RegExp(r'[əƏ]'),
+    'pl': RegExp(r'[ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]'),
+    'vi': RegExp(r'[đĐơưƠƯàáảãạằắẳẵặầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộờớởỡợùúủũụừứửữựỳýỷỹỵ]'),
+    'nl': RegExp(r'[ëïĳĲ]'),
   };
 
   // Top stop words for Latin & common languages
@@ -87,6 +99,73 @@ class TwoWayLanguageDetector {
       'и', 'в', 'не', 'на', 'я', 'что', 'тот', 'быть', 'с', 'он',
       'а', 'как', 'по', 'но', 'они', 'к', 'у', 'ты', 'где', 'да', 'нет',
       'привет', 'спасибо'
+    },
+    'hi': {
+      'है', 'हैं', 'का', 'की', 'के', 'में', 'से', 'पर', 'और', 'यह',
+      'वह', 'क्या', 'नहीं', 'नमस्ते', 'धन्यवाद', 'आप', 'हम', 'कहाँ',
+      'कैसे', 'बहुत', 'अच्छा', 'था', 'थी', 'थे', 'को'
+    },
+    'id': {
+      'yang', 'di', 'dan', 'ini', 'itu', 'dengan', 'untuk', 'tidak', 'dari',
+      'dalam', 'ada', 'ke', 'saya', 'anda', 'bisa', 'terima', 'kasih',
+      'halo', 'ya', 'dimana', 'apa', 'bagaimana'
+    },
+    'bn': {
+      'এই', 'এবং', 'না', 'কি', 'যে', 'হলো', 'করে', 'থেকে', 'একটি',
+      'আমি', 'আপনি', 'ধন্যবাদ', 'কোথায়', 'কেমন', 'হ্যাঁ', 'আছে', 'নমস্কার'
+    },
+    'fa': {
+      'در', 'به', 'از', 'که', 'این', 'را', 'با', 'است', 'برای',
+      'آن', 'یک', 'خود', 'تا', 'کرد', 'بر', 'سلام', 'مرسی',
+      'ممنون', 'کجا', 'چطور', 'بله', 'خیر'
+    },
+    'th': {
+      'และ', 'ที่', 'ใน', 'เป็น', 'มี', 'การ', 'ได้', 'จะ', 'ให้',
+      'ไป', 'ไม่', 'สวัสดี', 'ขอบคุณ', 'ใช่', 'ไม่ใช่', 'ที่ไหน',
+      'อย่างไร', 'ครับ', 'ค่ะ'
+    },
+    'vi': {
+      'và', 'của', 'là', 'có', 'trong', 'được', 'cho', 'này', 'với',
+      'không', 'xin', 'chào', 'cảm', 'ơn', 'ở', 'đâu', 'như', 'thế',
+      'nào', 'vâng', 'tôi', 'bạn'
+    },
+    'ms': {
+      'dan', 'yang', 'di', 'ini', 'itu', 'dengan', 'untuk', 'tidak', 'dari',
+      'dalam', 'ada', 'ke', 'saya', 'awak', 'boleh', 'terima', 'kasih',
+      'salam', 'ya', 'mana', 'apa', 'bagaimana'
+    },
+    'nl': {
+      'de', 'het', 'een', 'en', 'van', 'in', 'is', 'op', 'te',
+      'dat', 'die', 'voor', 'met', 'niet', 'om', 'als', 'hallo',
+      'dank', 'dankje', 'dankjewel', 'ja', 'nee', 'waar', 'hoe'
+    },
+    'pl': {
+      'i', 'w', 'na', 'z', 'do', 'nie', 'to', 'się', 'że',
+      'o', 'jak', 'ale', 'za', 'tak', 'dziękuję', 'cześć', 'gdzie',
+      'proszę', 'dzień', 'dobry'
+    },
+    'el': {
+      'και', 'το', 'να', 'σε', 'της', 'είναι', 'για', 'με', 'τον',
+      'που', 'την', 'από', 'δεν', 'γεια', 'ευχαριστώ', 'ναι', 'όχι',
+      'πού', 'πώς', 'παρακαλώ'
+    },
+    'uk': {
+      'і', 'в', 'не', 'на', 'що', 'з', 'до', 'як', 'це', 'я',
+      'та', 'по', 'але', 'де', 'так', 'ні', 'привіт', 'дякую',
+      'будь', 'ласка'
+    },
+    'az': {
+      'və', 'bu', 'da', 'də', 'ilə', 'üçün', 'bir', 'nə', 'var',
+      'yox', 'mən', 'sən', 'biz', 'bəli', 'xeyr', 'salam', 'sağ',
+      'ol', 'harada', 'necə'
+    },
+    'uz': {
+      'va', 'bu', 'bilan', 'uchun', 'ham', 'bir', 'kerak', 'yo‘q',
+      'ha', 'salom', 'rahmat', 'qayerda', 'qanday', 'emas', 'men'
+    },
+    'kk': {
+      'және', 'бұл', 'мен', 'үшін', 'де', 'да', 'бір', 'жоқ',
+      'иә', 'сәлем', 'рахмет', 'қайда', 'қалай'
     },
   };
 
@@ -182,11 +261,12 @@ class TwoWayLanguageDetector {
   }
 
   DetectionResult? _checkDistinctScripts(String text, Language langA, Language langB) {
-    // Check Arabic / Perso-Arabic script
+    // Check Arabic / Perso-Arabic script (Arabic, Urdu, Persian)
     final arabicCount = _arabicPattern.allMatches(text).length;
     if (arabicCount > 0) {
-      final aIsArabicFamily = langA.isoCode == 'ar' || langA.isoCode == 'ur';
-      final bIsArabicFamily = langB.isoCode == 'ar' || langB.isoCode == 'ur';
+      const arabicFamily = {'ar', 'ur', 'fa'};
+      final aIsArabicFamily = arabicFamily.contains(langA.isoCode);
+      final bIsArabicFamily = arabicFamily.contains(langB.isoCode);
 
       if (aIsArabicFamily && !bIsArabicFamily) {
         return DetectionResult(
@@ -202,24 +282,105 @@ class TwoWayLanguageDetector {
           reasoning: '${langB.name} script detected ($arabicCount characters)',
         );
       }
-      // If both use Arabic script (e.g. Arabic vs Urdu), let character & stop-word analysis decide!
+      // If both use Arabic script (e.g. Arabic vs Urdu vs Persian), let character & stop-word analysis decide!
     }
 
-    // Check Cyrillic (Russian)
+    // Check Cyrillic (Russian, Ukrainian, Kazakh)
     final cyrillicCount = _cyrillicPattern.allMatches(text).length;
     if (cyrillicCount > 0) {
-      if (langA.isoCode == 'ru') {
+      const cyrillicFamily = {'ru', 'uk', 'kk'};
+      final aIsCyrillic = cyrillicFamily.contains(langA.isoCode);
+      final bIsCyrillic = cyrillicFamily.contains(langB.isoCode);
+
+      if (aIsCyrillic && !bIsCyrillic) {
         return DetectionResult(
           detectedLanguage: langA,
           confidence: 0.99,
-          reasoning: 'Cyrillic script detected',
+          reasoning: '${langA.name} Cyrillic script detected',
         );
       }
-      if (langB.isoCode == 'ru') {
+      if (bIsCyrillic && !aIsCyrillic) {
         return DetectionResult(
           detectedLanguage: langB,
           confidence: 0.99,
-          reasoning: 'Cyrillic script detected',
+          reasoning: '${langB.name} Cyrillic script detected',
+        );
+      }
+      // If both use Cyrillic, let specific characters and stop words decide
+    }
+
+    // Check Devanagari (Hindi)
+    final devanagariCount = _devanagariPattern.allMatches(text).length;
+    if (devanagariCount > 0) {
+      if (langA.isoCode == 'hi') {
+        return DetectionResult(
+          detectedLanguage: langA,
+          confidence: 0.99,
+          reasoning: 'Devanagari script detected',
+        );
+      }
+      if (langB.isoCode == 'hi') {
+        return DetectionResult(
+          detectedLanguage: langB,
+          confidence: 0.99,
+          reasoning: 'Devanagari script detected',
+        );
+      }
+    }
+
+    // Check Bengali script
+    final bengaliCount = _bengaliPattern.allMatches(text).length;
+    if (bengaliCount > 0) {
+      if (langA.isoCode == 'bn') {
+        return DetectionResult(
+          detectedLanguage: langA,
+          confidence: 0.99,
+          reasoning: 'Bengali script detected',
+        );
+      }
+      if (langB.isoCode == 'bn') {
+        return DetectionResult(
+          detectedLanguage: langB,
+          confidence: 0.99,
+          reasoning: 'Bengali script detected',
+        );
+      }
+    }
+
+    // Check Thai script
+    final thaiCount = _thaiPattern.allMatches(text).length;
+    if (thaiCount > 0) {
+      if (langA.isoCode == 'th') {
+        return DetectionResult(
+          detectedLanguage: langA,
+          confidence: 0.99,
+          reasoning: 'Thai script detected',
+        );
+      }
+      if (langB.isoCode == 'th') {
+        return DetectionResult(
+          detectedLanguage: langB,
+          confidence: 0.99,
+          reasoning: 'Thai script detected',
+        );
+      }
+    }
+
+    // Check Greek script
+    final greekCount = _greekPattern.allMatches(text).length;
+    if (greekCount > 0) {
+      if (langA.isoCode == 'el') {
+        return DetectionResult(
+          detectedLanguage: langA,
+          confidence: 0.99,
+          reasoning: 'Greek script detected',
+        );
+      }
+      if (langB.isoCode == 'el') {
+        return DetectionResult(
+          detectedLanguage: langB,
+          confidence: 0.99,
+          reasoning: 'Greek script detected',
         );
       }
     }

@@ -106,5 +106,89 @@ void main() {
       expect(result.detectedLanguage.isoCode, 'sw');
       expect(result.confidence, greaterThanOrEqualTo(0.7));
     });
+
+    test('detects Hindi Devanagari script against English', () {
+      const hindiText = 'नमस्ते, आप कैसे हैं? धन्यवाद';
+      final result = detector.detectBetween(
+        text: hindiText,
+        languageA: SupportedLanguages.hindi,
+        languageB: SupportedLanguages.english,
+      );
+
+      expect(result.detectedLanguage.isoCode, 'hi');
+      expect(result.confidence, greaterThanOrEqualTo(0.9));
+    });
+
+    test('detects Persian distinctive characters against Arabic', () {
+      const farsiText = 'چطور هستید؟ خیلی ممنون';
+      final result = detector.detectBetween(
+        text: farsiText,
+        languageA: SupportedLanguages.arabic,
+        languageB: SupportedLanguages.persian,
+      );
+
+      expect(result.detectedLanguage.isoCode, 'fa');
+      expect(result.confidence, greaterThanOrEqualTo(0.9));
+    });
+
+    test('detects Thai script against English', () {
+      const thaiText = 'สวัสดีครับ ขอบคุณมากครับ';
+      final result = detector.detectBetween(
+        text: thaiText,
+        languageA: SupportedLanguages.thai,
+        languageB: SupportedLanguages.english,
+      );
+
+      expect(result.detectedLanguage.isoCode, 'th');
+      expect(result.confidence, greaterThanOrEqualTo(0.9));
+    });
+
+    test('detects Greek script against English', () {
+      const greekText = 'Γεια σας, ευχαριστώ πολύ';
+      final result = detector.detectBetween(
+        text: greekText,
+        languageA: SupportedLanguages.greek,
+        languageB: SupportedLanguages.english,
+      );
+
+      expect(result.detectedLanguage.isoCode, 'el');
+      expect(result.confidence, greaterThanOrEqualTo(0.9));
+    });
+
+    test('detects Indonesian stop-words against English', () {
+      const indoText = 'Halo, terima kasih banyak dan sampai jumpa';
+      final result = detector.detectBetween(
+        text: indoText,
+        languageA: SupportedLanguages.indonesian,
+        languageB: SupportedLanguages.english,
+      );
+
+      expect(result.detectedLanguage.isoCode, 'id');
+      expect(result.confidence, greaterThanOrEqualTo(0.7));
+    });
+
+    test('detects Ukrainian distinctive characters against Russian', () {
+      const ukrText = 'Привіт, як справи? Дякую';
+      final result = detector.detectBetween(
+        text: ukrText,
+        languageA: SupportedLanguages.russian,
+        languageB: SupportedLanguages.ukrainian,
+      );
+
+      expect(result.detectedLanguage.isoCode, 'uk');
+      expect(result.confidence, greaterThanOrEqualTo(0.9));
+    });
+
+    test('detects Azerbaijani distinctive characters and stop-words against Turkish', () {
+      const azeriText = 'Salam, necəsiniz? Təşəkkür edirəm';
+      final result = detector.detectBetween(
+        text: azeriText,
+        languageA: SupportedLanguages.turkish,
+        languageB: SupportedLanguages.azerbaijani,
+      );
+
+      expect(result.detectedLanguage.isoCode, 'az');
+      expect(result.confidence, greaterThanOrEqualTo(0.75));
+    });
   });
 }

@@ -155,6 +155,160 @@ class SupportedLanguages {
     isRtl: false,
   );
 
+  static const Language hindi = Language(
+    id: 'hi',
+    name: 'Hindi',
+    nativeName: 'हिन्दी',
+    flagEmoji: '🇮🇳',
+    isoCode: 'hi',
+    sttLocale: 'hi-IN',
+    ttsLocale: 'hi-IN',
+    isRtl: false,
+  );
+
+  static const Language indonesian = Language(
+    id: 'id',
+    name: 'Indonesian',
+    nativeName: 'Bahasa Indonesia',
+    flagEmoji: '🇮🇩',
+    isoCode: 'id',
+    sttLocale: 'id-ID',
+    ttsLocale: 'id-ID',
+    isRtl: false,
+  );
+
+  static const Language bengali = Language(
+    id: 'bn',
+    name: 'Bengali',
+    nativeName: 'বাংলা',
+    flagEmoji: '🇧🇩',
+    isoCode: 'bn',
+    sttLocale: 'bn-BD',
+    ttsLocale: 'bn-BD',
+    isRtl: false,
+  );
+
+  static const Language persian = Language(
+    id: 'fa',
+    name: 'Persian',
+    nativeName: 'فارسی',
+    flagEmoji: '🇮🇷',
+    isoCode: 'fa',
+    sttLocale: 'fa-IR',
+    ttsLocale: 'fa-IR',
+    isRtl: true,
+  );
+
+  static const Language thai = Language(
+    id: 'th',
+    name: 'Thai',
+    nativeName: 'ไทย',
+    flagEmoji: '🇹🇭',
+    isoCode: 'th',
+    sttLocale: 'th-TH',
+    ttsLocale: 'th-TH',
+    isRtl: false,
+  );
+
+  static const Language vietnamese = Language(
+    id: 'vi',
+    name: 'Vietnamese',
+    nativeName: 'Tiếng Việt',
+    flagEmoji: '🇻🇳',
+    isoCode: 'vi',
+    sttLocale: 'vi-VN',
+    ttsLocale: 'vi-VN',
+    isRtl: false,
+  );
+
+  static const Language malay = Language(
+    id: 'ms',
+    name: 'Malay',
+    nativeName: 'Bahasa Melayu',
+    flagEmoji: '🇲🇾',
+    isoCode: 'ms',
+    sttLocale: 'ms-MY',
+    ttsLocale: 'ms-MY',
+    isRtl: false,
+  );
+
+  static const Language dutch = Language(
+    id: 'nl',
+    name: 'Dutch',
+    nativeName: 'Nederlands',
+    flagEmoji: '🇳🇱',
+    isoCode: 'nl',
+    sttLocale: 'nl-NL',
+    ttsLocale: 'nl-NL',
+    isRtl: false,
+  );
+
+  static const Language polish = Language(
+    id: 'pl',
+    name: 'Polish',
+    nativeName: 'Polski',
+    flagEmoji: '🇵🇱',
+    isoCode: 'pl',
+    sttLocale: 'pl-PL',
+    ttsLocale: 'pl-PL',
+    isRtl: false,
+  );
+
+  static const Language greek = Language(
+    id: 'el',
+    name: 'Greek',
+    nativeName: 'Ελληνικά',
+    flagEmoji: '🇬🇷',
+    isoCode: 'el',
+    sttLocale: 'el-GR',
+    ttsLocale: 'el-GR',
+    isRtl: false,
+  );
+
+  static const Language ukrainian = Language(
+    id: 'uk',
+    name: 'Ukrainian',
+    nativeName: 'Українська',
+    flagEmoji: '🇺🇦',
+    isoCode: 'uk',
+    sttLocale: 'uk-UA',
+    ttsLocale: 'uk-UA',
+    isRtl: false,
+  );
+
+  static const Language azerbaijani = Language(
+    id: 'az',
+    name: 'Azerbaijani',
+    nativeName: 'Azərbaycan dili',
+    flagEmoji: '🇦🇿',
+    isoCode: 'az',
+    sttLocale: 'az-AZ',
+    ttsLocale: 'az-AZ',
+    isRtl: false,
+  );
+
+  static const Language uzbek = Language(
+    id: 'uz',
+    name: 'Uzbek',
+    nativeName: 'Oʻzbekcha',
+    flagEmoji: '🇺🇿',
+    isoCode: 'uz',
+    sttLocale: 'uz-UZ',
+    ttsLocale: 'uz-UZ',
+    isRtl: false,
+  );
+
+  static const Language kazakh = Language(
+    id: 'kk',
+    name: 'Kazakh',
+    nativeName: 'Қазақша',
+    flagEmoji: '🇰🇿',
+    isoCode: 'kk',
+    sttLocale: 'kk-KZ',
+    ttsLocale: 'kk-KZ',
+    isRtl: false,
+  );
+
   static const List<Language> all = [
     arabic,
     turkish,
@@ -170,6 +324,20 @@ class SupportedLanguages {
     korean,
     urdu,
     swahili,
+    hindi,
+    indonesian,
+    bengali,
+    persian,
+    thai,
+    vietnamese,
+    malay,
+    dutch,
+    polish,
+    greek,
+    ukrainian,
+    azerbaijani,
+    uzbek,
+    kazakh,
   ];
 
   static Language fromIsoCode(String code, {Language fallback = english}) {
