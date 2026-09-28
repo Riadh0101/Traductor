@@ -190,5 +190,29 @@ void main() {
       expect(result.detectedLanguage.isoCode, 'az');
       expect(result.confidence, greaterThanOrEqualTo(0.75));
     });
+
+    test('detects Tagalog stop-words against English', () {
+      const tagalogText = 'Kumusta ka, maraming salamat sa tulong mo';
+      final result = detector.detectBetween(
+        text: tagalogText,
+        languageA: SupportedLanguages.filipino,
+        languageB: SupportedLanguages.english,
+      );
+
+      expect(result.detectedLanguage.isoCode, 'tl');
+      expect(result.confidence, greaterThanOrEqualTo(0.7));
+    });
+
+    test('detects Tamil script against English', () {
+      const tamilText = 'வணக்கம், எப்படி இருக்கிறீர்கள்? நன்றி';
+      final result = detector.detectBetween(
+        text: tamilText,
+        languageA: SupportedLanguages.tamil,
+        languageB: SupportedLanguages.english,
+      );
+
+      expect(result.detectedLanguage.isoCode, 'ta');
+      expect(result.confidence, greaterThanOrEqualTo(0.9));
+    });
   });
 }

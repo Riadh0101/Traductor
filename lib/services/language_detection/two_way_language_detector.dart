@@ -22,6 +22,7 @@ class TwoWayLanguageDetector {
   static final RegExp _bengaliPattern = RegExp(r'[\u0980-\u09FF]');
   static final RegExp _thaiPattern = RegExp(r'[\u0E00-\u0E7F]');
   static final RegExp _greekPattern = RegExp(r'[\u0370-\u03FF]');
+  static final RegExp _tamilPattern = RegExp(r'[\u0B80-\u0BFF]');
 
   // Diacritics specific to languages
   static final Map<String, RegExp> _specificCharPatterns = {
@@ -166,6 +167,16 @@ class TwoWayLanguageDetector {
     'kk': {
       'және', 'бұл', 'мен', 'үшін', 'де', 'да', 'бір', 'жоқ',
       'иә', 'сәлем', 'рахмет', 'қайда', 'қалай'
+    },
+    'tl': {
+      'ang', 'ng', 'mga', 'sa', 'na', 'ay', 'ito', 'at', 'ko', 'mo',
+      'ngunit', 'para', 'hindi', 'oo', 'salamat', 'kumusta', 'saan',
+      'paano', 'bakit', 'ano', 'magkano', 'siya', 'kami', 'kayo'
+    },
+    'ta': {
+      'மற்றும்', 'ஒரு', 'இந்த', 'என்று', 'இல்லை', 'ஆம்', 'வணக்கம்',
+      'நன்றி', 'எங்கே', 'எப்படி', 'என்ன', 'நான்', 'நீங்கள்', 'நாம்',
+      'அவர்', 'அது'
     },
   };
 
@@ -381,6 +392,25 @@ class TwoWayLanguageDetector {
           detectedLanguage: langB,
           confidence: 0.99,
           reasoning: 'Greek script detected',
+        );
+      }
+    }
+
+    // Check Tamil script
+    final tamilCount = _tamilPattern.allMatches(text).length;
+    if (tamilCount > 0) {
+      if (langA.isoCode == 'ta') {
+        return DetectionResult(
+          detectedLanguage: langA,
+          confidence: 0.99,
+          reasoning: 'Tamil script detected',
+        );
+      }
+      if (langB.isoCode == 'ta') {
+        return DetectionResult(
+          detectedLanguage: langB,
+          confidence: 0.99,
+          reasoning: 'Tamil script detected',
         );
       }
     }

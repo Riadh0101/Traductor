@@ -309,6 +309,28 @@ class SupportedLanguages {
     isRtl: false,
   );
 
+  static const Language filipino = Language(
+    id: 'tl',
+    name: 'Tagalog (Filipino)',
+    nativeName: 'Tagalog',
+    flagEmoji: '🇵🇭',
+    isoCode: 'tl',
+    sttLocale: 'fil-PH',
+    ttsLocale: 'fil-PH',
+    isRtl: false,
+  );
+
+  static const Language tamil = Language(
+    id: 'ta',
+    name: 'Tamil',
+    nativeName: 'தமிழ்',
+    flagEmoji: '🇮🇳',
+    isoCode: 'ta',
+    sttLocale: 'ta-IN',
+    ttsLocale: 'ta-IN',
+    isRtl: false,
+  );
+
   static const List<Language> all = [
     arabic,
     turkish,
@@ -338,12 +360,18 @@ class SupportedLanguages {
     azerbaijani,
     uzbek,
     kazakh,
+    filipino,
+    tamil,
   ];
 
   static Language fromIsoCode(String code, {Language fallback = english}) {
     final lower = code.toLowerCase().trim();
     return all.firstWhere(
-      (lang) => lang.isoCode == lower || lang.id == lower || lang.sttLocale.toLowerCase().startsWith(lower),
+      (lang) =>
+          lang.isoCode == lower ||
+          lang.id == lower ||
+          lang.sttLocale.toLowerCase().startsWith(lower) ||
+          (lower == 'fil' && lang.isoCode == 'tl'),
       orElse: () => fallback,
     );
   }

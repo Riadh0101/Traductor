@@ -57,7 +57,7 @@ void main() {
       expect(state.canUseFaceToFace, isTrue);
       expect(state.canUseAiSummary, isTrue);
 
-      // All 28 languages must be allowed for Pro
+      // All 30 languages must be allowed for Pro
       for (final lang in SupportedLanguages.all) {
         expect(state.isLanguageAllowed(lang), isTrue);
       }

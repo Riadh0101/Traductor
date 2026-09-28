@@ -3,8 +3,8 @@ import 'package:traductor/core/constants/supported_languages.dart';
 
 void main() {
   group('SupportedLanguages Tests', () {
-    test('contains at least 28 supported languages', () {
-      expect(SupportedLanguages.all.length, greaterThanOrEqualTo(28));
+    test('contains at least 30 supported languages', () {
+      expect(SupportedLanguages.all.length, greaterThanOrEqualTo(30));
     });
 
     test('verifies Arabic language configuration', () {
@@ -83,6 +83,20 @@ void main() {
       final az = SupportedLanguages.azerbaijani;
       expect(az.isoCode, 'az');
       expect(az.nativeName, 'Azərbaycan dili');
+
+      final tl = SupportedLanguages.filipino;
+      expect(tl.isoCode, 'tl');
+      expect(tl.name, 'Tagalog (Filipino)');
+      expect(tl.nativeName, 'Tagalog');
+      expect(tl.flagEmoji, '🇵🇭');
+      expect(tl.isRtl, false);
+
+      final ta = SupportedLanguages.tamil;
+      expect(ta.isoCode, 'ta');
+      expect(ta.name, 'Tamil');
+      expect(ta.nativeName, 'தமிழ்');
+      expect(ta.flagEmoji, '🇮🇳');
+      expect(ta.isRtl, false);
     });
 
     test('resolves language by ISO code correctly', () {
@@ -103,6 +117,15 @@ void main() {
 
       final faLang = SupportedLanguages.fromIsoCode('fa');
       expect(faLang.name, 'Persian');
+
+      final tlLang = SupportedLanguages.fromIsoCode('tl');
+      expect(tlLang.name, 'Tagalog (Filipino)');
+
+      final filLang = SupportedLanguages.fromIsoCode('fil');
+      expect(filLang.name, 'Tagalog (Filipino)');
+
+      final taLang = SupportedLanguages.fromIsoCode('ta');
+      expect(taLang.name, 'Tamil');
 
       final fallback = SupportedLanguages.fromIsoCode('non_existing');
       expect(fallback.isoCode, 'en');

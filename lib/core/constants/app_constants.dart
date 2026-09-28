@@ -2,7 +2,7 @@ class AppConstants {
   static const String appName = 'RealTime Translator';
   static const String companyName = 'بصيرة - Basira AI 2026';
   static const String appVersion = '1.0.0';
-  static const int appBuildNumber = 13; // Auto-increment on every system update/build
+  static const int appBuildNumber = 14; // Auto-increment on every system update/build
 
   // Preferences Keys
   static const String prefLanguage1 = 'pref_language_1';
